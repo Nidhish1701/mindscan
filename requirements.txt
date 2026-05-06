@@ -1,41 +1,13 @@
-# Mental Health Early Warning System — Requirements
-# Python 3.10+ recommended
-
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# ---- Core ML ----
-torch>=2.1.0
-transformers>=4.38.0
-datasets>=2.18.0
+# MindScan — Production Requirements (slim, no torch)
 scikit-learn>=1.4.0
-accelerate>=0.27.0
-
-# ---- Data ----
 numpy>=1.24.0
 pandas>=2.1.0
-
-# ---- Gradient Boosting (ensemble) ----
 xgboost>=2.0.0
-
-# ---- Explainability ----
 shap>=0.44.0
-
-# ---- REST API ----
 fastapi>=0.110.0
 uvicorn[standard]>=0.27.0
 python-multipart>=0.0.9
-
-# ---- Download / progress ----
 requests>=2.31.0
 tqdm>=4.66.0
-
-# ---- Visualization ----
-matplotlib>=3.8.0
-seaborn>=0.13.0
-
-# ---- Utilities ----
 python-dotenv>=1.0.0
-
-# ---- Auth ----
-python-jose[cryptography]>=3.3.0
-passlib[bcrypt]>=1.7.4
+pydantic>=2.0.0
