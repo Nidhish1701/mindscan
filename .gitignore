@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Large model files — not used in production (XGBoost handles predictions)
+models/distilbert/
+
+# Raw training data
+data/Original Reddit Data/
+data/*.db
+data/*.csv
+
+# Notebooks
+notebooks/
+
+# Local env
+.env
+.env.local
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+build.log
+test_output.json
+test_results.txt
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Raw training data (large, not needed for deployment)
+data/Original Reddit Data/
+data/*.db
+data/*.csv
+
+# Notebooks
+notebooks/
+
+# Local env
+.env
+.env.local
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+build.log
+test_output.json
+test_results.txt

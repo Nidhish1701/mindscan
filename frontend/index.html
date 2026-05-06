@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindScan — Emotional awareness insights to help you understand how you're feeling.">
+    <title>MindScan — Emotional Insights</title>
+    <link rel="stylesheet" href="/static/style.css?v=2.0.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9.5 2A5 5 0 0 1 12 7v5H7a5 5 0 0 1 2.5-10z"/>
+                    <path d="M14.5 2A5 5 0 0 0 12 7v5h5a5 5 0 0 0-2.5-10z"/>
+                    <path d="M12 12v10"/>
+                    <path d="M8 12c-2.5 0-4.5 2-4.5 4.5S5.5 21 8 21h8c2.5 0 4.5-2 4.5-4.5S18.5 12 16 12"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">MindScan</span>
+                <span class="brand-tagline">Emotional Insights</span>
+            </div>
+        </div>
+
+        <div class="sidebar-status" id="sidebarStatus">
+            <div class="status-indicator" id="statusDot"></div>
+            <span id="statusText">Connecting…</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-tab="analyzer" id="navAnalyzer">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Mood Check</span>
+            </button>
+            <button class="nav-item" data-tab="dashboard" id="navDashboard">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Overview</span>
+            </button>
+            <button class="nav-item" data-tab="chatbot" id="navChatbot">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Support Chat</span>
+            </button>
+            <button class="nav-item" data-tab="history" id="navHistory">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>My Reports</span>
+            </button>
+            <button class="nav-item" data-tab="profile" id="navProfile">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Conversation Scan</span>
+            </button>
+            <button class="nav-item" data-tab="coping" id="navCoping">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <span>Wellness Tools</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p class="sidebar-disclaimer">Results are for personal awareness only and not a medical diagnosis. Please speak with a professional if needed.</p>
+        </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="app-shell">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h2 class="page-title" id="pageTitle">Mood Check</h2>
+                <span class="page-subtitle" id="pageSubtitle">Understand how your words reflect your emotional state</span>
+            </div>
+            <div class="topbar-right">
+                <div class="model-pill">
+                    <div class="status-indicator online"></div>
+                    <span>AI Model · Active</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT PANELS -->
+        <main class="content">
+
+            <!-- ===================== MOOD CHECK (ANALYZER) ===================== -->
+            <section class="panel active" id="analyzerPanel">
+                <div class="analyzer-layout">
+                    <div class="analyzer-left">
+                        <div class="card">
+                            <div class="card-label">What's on your mind?</div>
+                            <textarea id="inputText" class="text-input" placeholder="Write freely — how have you been feeling lately? There's no right or wrong answer." rows="7"></textarea>
+                            <div class="input-footer">
+                                <span class="char-count" id="charCount">0 / 2000</span>
+                                <div class="input-actions">
+                                    <button class="btn-ghost" onclick="clearInput()">Clear</button>
+                                    <button class="btn-primary" id="analyzeBtn" onclick="analyzeText()">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m13 2-2 2.5h3L12 7"/><path d="M18 2h-8"/><path d="M22 12v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7"/><path d="M22 12H2"/></svg>
+                                        Check my mood
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="analyzer-right" id="resultsSection" style="display:none;">
+                        <!-- Result header -->
+                        <div class="result-header-card" id="resultHeaderCard">
+                            <div class="result-label-row">
+                                <div>
+                                    <div class="result-class" id="predLabel">—</div>
+                                    <div class="result-meta" id="predMeta">—</div>
+                                </div>
+                                <div class="severity-pill" id="severityBadge">—</div>
+                            </div>
+                            <div class="result-stats-row">
+                                <div class="result-stat">
+                                    <div class="result-stat-value" id="gaugeValue">—</div>
+                                    <div class="result-stat-label">Emotional Intensity</div>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-value" id="predConfidence">—</div>
+                                    <div class="result-stat-label">Probability</div>
+                                </div>
+                                <div class="result-stat">
+                                    <div class="result-stat-value" id="predLatency">—</div>
+                                    <div class="result-stat-label">Response time</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Emotions -->
+                        <div class="card" style="margin-top:14px;">
+                            <div class="card-label">Top Emotional Signals</div>
+                            <div class="prob-bars" id="probBars"></div>
+                        </div>
+
+                        <!-- Key words -->
+                        <div class="card" style="margin-top:14px;">
+                            <div class="card-label">Detected Emotional Terms</div>
+                            <div class="word-bars" id="wordBars">
+                                <p class="empty-msg">Run a mood check to see which words stood out.</p>
+                            </div>
+                        </div>
+
+                        <!-- Suggestions -->
+                        <div class="card" id="recommendationsCard" style="margin-top:14px; display:none;">
+                            <div class="card-label">Suggested Support</div>
+                            <div id="recommendationsList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Empty state -->
+                    <div class="analyzer-empty" id="analyzerEmpty">
+                        <div class="empty-icon">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <h3>Nothing here yet</h3>
+                        <p>Write how you're feeling on the left and tap <strong>Check my mood</strong> to get a gentle reading of your emotional state.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== OVERVIEW (DASHBOARD) ===================== -->
+            <section class="panel" id="dashboardPanel">
+                <div class="kpi-grid" id="kpiGrid">
+                    <div class="kpi-tile">
+                        <div class="kpi-icon kpi-icon-blue">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><polyline points="18 17 13 12 8 17 3 12"/></svg>
+                        </div>
+                        <div class="kpi-value" id="kpiTotal">—</div>
+                        <div class="kpi-label">Total Check-ins</div>
+                    </div>
+                    <div class="kpi-tile">
+                        <div class="kpi-icon kpi-icon-red">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="kpi-value" id="kpiCrisis">—</div>
+                        <div class="kpi-label">High-concern Moments</div>
+                    </div>
+                    <div class="kpi-tile">
+                        <div class="kpi-icon kpi-icon-green">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="kpi-value" id="kpiConfidence">—</div>
+                        <div class="kpi-label">Avg Detection Strength</div>
+                    </div>
+                    <div class="kpi-tile">
+                        <div class="kpi-icon kpi-icon-purple">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="kpi-value" id="kpiLatency">—</div>
+                        <div class="kpi-label">Avg Response Time</div>
+                    </div>
+                </div>
+
+                <div class="chart-grid">
+                    <div class="card">
+                        <div class="card-label">Mood Breakdown</div>
+                        <div class="chart-wrap"><canvas id="labelChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Activity Over Time</div>
+                        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-label">Recent Check-ins</div>
+                    <div class="table-scroll">
+                        <table class="data-table" id="recentTable">
+                            <thead><tr><th>Time</th><th>What you wrote</th><th>Mood Signal</th><th>Probability</th><th>Intensity</th></tr></thead>
+                            <tbody id="recentTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== SUPPORT CHAT ===================== -->
+            <section class="panel" id="chatbotPanel">
+                <div class="chat-shell">
+                    <div class="chat-info-bar">
+                        <div class="chat-avatar-wrap">
+                            <div class="chat-bot-avatar">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
+                            </div>
+                            <div>
+                                <div class="chat-bot-name">MindScan</div>
+                                <div class="chat-bot-status"><span class="online-dot"></span> Here for you</div>
+                            </div>
+                        </div>
+                        <div class="chat-notice">💙 This space is for emotional support and awareness — not a replacement for professional help.</div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="msg bot">
+                            <div class="msg-avatar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/></svg>
+                            </div>
+                            <div class="msg-bubble">Hey — how has your day been so far? 💙</div>
+                        </div>
+                    </div>
+
+                    <div id="typingIndicator" class="typing-indicator" style="display:none;">
+                        <div class="msg-avatar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/></svg>
+                        </div>
+                        <div class="typing-dots"><span></span><span></span><span></span></div>
+                    </div>
+
+                    <div class="chat-compose">
+                        <input type="text" id="chatInput" class="chat-input" placeholder="You can share anything here…" onkeydown="if(event.key==='Enter') sendChat()">
+                        <button class="btn-send" onclick="sendChat()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== MY REPORTS (HISTORY) ===================== -->
+            <section class="panel" id="historyPanel">
+                <div class="card">
+                    <div class="card-header-row">
+                        <div class="card-label" style="margin-bottom:0;">Your Past Check-ins</div>
+                        <button class="btn-ghost" onclick="loadHistory()">↻ Refresh</button>
+                    </div>
+                    <div class="table-scroll" style="margin-top:16px;">
+                        <table class="data-table" id="historyTable">
+                            <thead><tr><th>When</th><th>What you wrote</th><th>Mood Signal</th><th>Probability</th><th>Intensity</th><th>Speed</th></tr></thead>
+                            <tbody id="historyTableBody"><tr><td colspan="6" class="empty-row">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== CONVERSATION SCAN ===================== -->
+            <section class="panel" id="profilePanel">
+                <div class="analyzer-layout">
+                    <div class="analyzer-left">
+                        <div class="card">
+                            <div class="card-label">Paste your messages</div>
+                            <h3 class="card-title" style="font-size:1rem; font-weight:600;">Conversation Scan</h3>
+                            <p style="font-size: 0.82rem; color: var(--txt3); margin-bottom: 14px; line-height:1.6;">Paste multiple messages or posts separated by new lines. We'll look for patterns in how you've been feeling over time.</p>
+                            <textarea id="batchInputText" class="text-input" placeholder="Message 1: I'm feeling so exhausted today.&#10;Message 2: I didn't sleep at all last night.&#10;Message 3: I really hate myself sometimes." rows="10"></textarea>
+                            <div class="input-footer">
+                                <div class="input-actions" style="margin-left:auto;">
+                                    <button class="btn-ghost" onclick="document.getElementById('batchInputText').value=''">Clear</button>
+                                    <button class="btn-primary" id="scanBtn" onclick="runProfileScan()">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        Scan messages
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analyzer-right" id="profileResults" style="display:none;">
+                        <div class="card" style="border-color: var(--border2);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+                                <div>
+                                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--txt);">Emotional Overview</h3>
+                                    <p style="font-size: 0.78rem; color: var(--txt3); margin-top:2px;" id="scanCountLabel">Based on your messages</p>
+                                </div>
+                                <span style="background: var(--bg3); color: var(--txt2); padding: 4px 12px; border-radius: 20px; font-size: 0.73rem; border: 1px solid var(--border);">Conversation Scan</span>
+                            </div>
+
+                            <div style="display: flex; gap: 14px; margin-bottom: 20px;">
+                                <div style="flex: 1; text-align: center; background: var(--bg3); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                                    <div style="font-size: 0.72rem; color: var(--txt3); margin-bottom: 4px;">Most common feeling</div>
+                                    <div id="profDomCond" style="font-size: 1.25rem; font-weight: 700; color: var(--txt);">—</div>
+                                </div>
+                                <div style="flex: 1; text-align: center; background: var(--bg3); padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+                                    <div style="font-size: 0.72rem; color: var(--txt3); margin-bottom: 4px;">Emotional intensity</div>
+                                    <div id="profRiskScore" style="font-size: 1.25rem; font-weight: 700; color: var(--amber); font-family: var(--mono);">—</div>
+                                </div>
+                            </div>
+
+                            <div style="font-size: 0.84rem; color: var(--txt2); line-height: 1.7; background: var(--bg3); padding: 14px; border-radius: 10px;">
+                                <span id="profSummary">—</span>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <div class="card-label">Emotional pattern over time</div>
+                                <div style="height: 140px; position: relative;">
+                                    <canvas id="profileTrendChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== WELLNESS TOOLS (COPING) ===================== -->
+            <section class="panel" id="copingPanel">
+                <div class="coping-layout">
+
+                    <!-- Left: Breathing -->
+                    <div class="card coping-breathe-card">
+                        <h3 class="card-title" style="font-size:1rem; margin-bottom:4px;">Calm Breathing</h3>
+                        <p style="font-size: 0.82rem; color: var(--txt3); margin-bottom: 28px; line-height:1.6;">Breathe in for 4 seconds, hold for 7, then slowly exhale for 8. Repeat until you feel calmer.</p>
+
+                        <div class="breathing-container">
+                            <div class="breathing-circle" id="breathCircle">
+                                <span id="breathText">Ready</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 24px;">
+                            <button class="btn-primary" id="btnStartBreath" onclick="startBreathing()">Start</button>
+                            <button class="btn-ghost" id="btnStopBreath" onclick="stopBreathing()" disabled>Stop</button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Mood Reset Cards -->
+                    <div class="card">
+                        <h3 class="card-title" style="font-size:1rem; margin-bottom:4px;">Quick Reset</h3>
+                        <p style="font-size: 0.82rem; color: var(--txt3); margin-bottom: 20px; line-height:1.6;">Pick something that might help right now. Tap a card to get started.</p>
+
+                        <div class="mood-reset-grid">
+                            <button class="mood-card" onclick="showMoodTip('music')">
+                                <span class="mood-card-icon">🎵</span>
+                                <span class="mood-card-label">Calming sounds</span>
+                            </button>
+                            <button class="mood-card" onclick="showMoodTip('water')">
+                                <span class="mood-card-icon">💧</span>
+                                <span class="mood-card-label">Drink water</span>
+                            </button>
+                            <button class="mood-card" onclick="showMoodTip('walk')">
+                                <span class="mood-card-icon">🌤️</span>
+                                <span class="mood-card-label">Short walk</span>
+                            </button>
+                            <button class="mood-card" onclick="showMoodTip('write')">
+                                <span class="mood-card-icon">✍️</span>
+                                <span class="mood-card-label">Write it out</span>
+                            </button>
+                            <button class="mood-card" onclick="showMoodTip('grounding')">
+                                <span class="mood-card-icon">🧘</span>
+                                <span class="mood-card-label">5-4-3-2-1</span>
+                            </button>
+                            <button class="mood-card" onclick="showMoodTip('rest')">
+                                <span class="mood-card-icon">🌙</span>
+                                <span class="mood-card-label">Rest a moment</span>
+                            </button>
+                        </div>
+
+                        <div class="mood-tip-box" id="moodTipBox" style="display:none;"></div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js?v=2.0.0"></script>
+</body>
+</html>

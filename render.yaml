@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mindscan
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: MODEL_DIR
+        value: models
+      - key: DB_PATH
+        value: data/predictions.db
+    disk:
+      name: mindscan-data
+      mountPath: /app/data
+      sizeGB: 1
